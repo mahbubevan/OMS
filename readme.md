@@ -35,6 +35,11 @@
                 <td> super_admin </td>
                 <td> super_admin can delete any user, but can't delete self </td>
             </tr>
+             <tr>
+                <td>Export User Credential</td>
+                <td> super_admin </td>
+                <td> super_admin can Export All User Credential <br/> <b>Limitation: </b> Headers and Password field is not showing </td>
+            </tr>
         </tbody>
     </table>
 </div>
