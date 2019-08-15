@@ -28,7 +28,7 @@
             <tr>
                 <td>Update</td>
                 <td> All </td>
-                <td> super_admin can update all user, but user can only update their name & email . Password can't be updated (limitations) <br/> super_admin & user can't update their role. But other super_admin can update all user's role. </td>
+                <td> super_admin can update all user, but user can only update their name & email . Password can't be updated (limitations) <br/> super_admin & user can't update their own role. But other super_admin can update all user's role. </td>
             </tr>
             <tr>
                 <td>Delete User</td>
