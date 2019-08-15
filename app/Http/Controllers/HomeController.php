@@ -2,8 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\UsersExport;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
+
+use DB;
 use App\User;
+use Validator;
+use Exporter;
 
 class HomeController extends Controller
 {
@@ -96,6 +102,34 @@ class HomeController extends Controller
                 'msg' => 'Error Occured'
             ];
         }
+    }
+
+
+    public function importExcel(Request $request)
+    {
+        $validator = Validator::make($request->all(),[
+            'file' => ['required','max:5000','mimes:xlsx,xls,csv']
+        ]);
+
+        if($validator->passes()){
+            $dateTime = date('Ymd_His');
+            $file = $request->file('file');
+            $filename = $dateTime.'-'.$file->getClientOriginalName();
+            $savePath = public_path('/upload/');
+            $file->move($savePath,$filename);
+            return [
+                'msg' => 'File uploaded successfully'
+            ];
+        }else{
+            return[
+                'msg' => $validator->errors()->all()
+            ];
+        }
+    }
+
+    public function exportExcel()
+    {
+        return Excel::download(new UsersExport, 'users credential.xlsx');
     }
 
     

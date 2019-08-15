@@ -22,3 +22,6 @@ Route::get('/data','HomeController@get_data');
 Route::post('/data','HomeController@store');
 Route::put('/data/{data}','HomeController@update');
 Route::delete('/data/{data}','HomeController@destroy');
+
+Route::get('/excel','HomeController@exportExcel');
+Route::post('/excel','HomeController@importExcel');

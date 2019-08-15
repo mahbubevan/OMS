@@ -80244,7 +80244,7 @@ function (_Component) {
       modal: false,
       username: '',
       email: '',
-      role: 'admin',
+      role: 'super_admin',
       password: '',
       responseError: [],
       resStatus: '',
@@ -80255,7 +80255,9 @@ function (_Component) {
       editRole: '',
       authorization: [],
       auth_user: [],
-      index: 0
+      index: 0,
+      importModal: false,
+      file: null
     };
     _this.nextPageHandler = _this.nextPageHandler.bind(_assertThisInitialized(_this));
     _this.prevPageHandler = _this.prevPageHandler.bind(_assertThisInitialized(_this)); //New Item
@@ -80264,6 +80266,10 @@ function (_Component) {
     _this.setInputValue = _this.setInputValue.bind(_assertThisInitialized(_this));
     _this.submitForm = _this.submitForm.bind(_assertThisInitialized(_this));
     _this.editModalToggle = _this.editModalToggle.bind(_assertThisInitialized(_this));
+    _this.importModalToggle = _this.importModalToggle.bind(_assertThisInitialized(_this));
+    _this.fileOnChange = _this.fileOnChange.bind(_assertThisInitialized(_this));
+    _this.onFormSubmit = _this.onFormSubmit.bind(_assertThisInitialized(_this));
+    _this.handleExcelPost = _this.handleExcelPost.bind(_assertThisInitialized(_this));
     return _this;
   } //New Item
 
@@ -80471,9 +80477,49 @@ function (_Component) {
       }
     }
   }, {
+    key: "importModalToggle",
+    value: function importModalToggle() {
+      this.setState({
+        importModal: !this.state.importModal,
+        resStatus: ''
+      });
+    }
+  }, {
+    key: "fileOnChange",
+    value: function fileOnChange(event) {
+      this.setState({
+        file: event.target.files[0]
+      });
+    }
+  }, {
+    key: "onFormSubmit",
+    value: function onFormSubmit(event) {
+      event.preventDefault();
+      this.handleExcelPost(this.state.file);
+    }
+  }, {
+    key: "handleExcelPost",
+    value: function handleExcelPost(file) {
+      var _this8 = this;
+
+      var url = '/excel';
+      var formData = new FormData();
+      formData.append('file', file);
+      var config = {
+        headers: {
+          'content-type': 'multipart/form-data'
+        }
+      };
+      axios__WEBPACK_IMPORTED_MODULE_1___default.a.post(url, formData, config).then(function (res) {
+        _this8.setState({
+          resStatus: res.data.msg
+        });
+      });
+    }
+  }, {
     key: "render",
     value: function render() {
-      var _this8 = this;
+      var _this9 = this;
 
       //console.log(this.state.auth_user)
       //const data = 
@@ -80489,12 +80535,14 @@ function (_Component) {
       }, " Add New ")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "ml-1 mr-1"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
-        className: "btn btn-md btn-primary"
+        className: "btn btn-md btn-primary",
+        onClick: this.importModalToggle
       }, " Import ")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "ml-1 mr-1"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
+        href: '/excel',
         className: "btn btn-md btn-primary"
-      }, " Export "))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      }, "Export"))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "ml-auto"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "pt-2"
@@ -80519,16 +80567,16 @@ function (_Component) {
           key: id
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, " ", i.id, " "), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, " ", i.name, " "), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, " ", i.email, " "), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, " ", i.role, " "), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           className: "d-flex"
-        }, _this8.state.auth_user.role === 'super_admin' || _this8.state.auth_user.id === i.id ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        }, _this9.state.auth_user.role === 'super_admin' || _this9.state.auth_user.id === i.id ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           className: "pr-1"
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
           className: "btn btn-sm btn-info",
-          onClick: _this8.editUser.bind(_this8, i.id, i.name, i.email, i.role, id)
-        }, "Edit")) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, " "), _this8.state.auth_user.id === i.id || _this8.state.auth_user.role === 'user' ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, " ") : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          onClick: _this9.editUser.bind(_this9, i.id, i.name, i.email, i.role, id)
+        }, "Edit")) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, " "), _this9.state.auth_user.id === i.id || _this9.state.auth_user.role === 'user' ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, " ") : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           className: "pl-1"
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
           className: "btn btn-sm btn-danger",
-          onClick: _this8.deleteUser.bind(_this8, i.id)
+          onClick: _this9.deleteUser.bind(_this9, i.id)
         }, "Delete")))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, " ", i.created_at, " "), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, " ", i.updated_at, " "));
       }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "text-center"
@@ -80562,7 +80610,7 @@ function (_Component) {
         onChange: this.setInputValue
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
         className: "text-danger"
-      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(reactstrap__WEBPACK_IMPORTED_MODULE_2__["FormGroup"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(reactstrap__WEBPACK_IMPORTED_MODULE_2__["Label"], null, "Password"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(reactstrap__WEBPACK_IMPORTED_MODULE_2__["Input"], {
+      }, " ", this.state.responseError.username, " ")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(reactstrap__WEBPACK_IMPORTED_MODULE_2__["FormGroup"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(reactstrap__WEBPACK_IMPORTED_MODULE_2__["Label"], null, "Password"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(reactstrap__WEBPACK_IMPORTED_MODULE_2__["Input"], {
         type: "password",
         name: "password",
         value: this.state.password,
@@ -80616,17 +80664,37 @@ function (_Component) {
         name: "editRole",
         value: this.state.editRole,
         onChange: this.setInputValue,
-        disabled: this.state.auth_user.role !== 'super_admin'
+        disabled: this.state.auth_user.role !== 'super_admin' || this.state.auth_user.id === this.state.uid
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", {
-        value: "admin"
-      }, "Admin"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", {
+        value: "super_admin"
+      }, "Super Admin"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", {
         value: "user"
       }, "User"))))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(reactstrap__WEBPACK_IMPORTED_MODULE_2__["ModalFooter"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(reactstrap__WEBPACK_IMPORTED_MODULE_2__["Button"], {
         onClick: this.onUpdate.bind(this, this.state.uid, this.state.editUsername, this.state.editEmail, this.state.editRole, this.state.index)
       }, "Update"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(reactstrap__WEBPACK_IMPORTED_MODULE_2__["Button"], {
         color: "secondary",
         onClick: this.editModalToggle
-      }, "Cancel"))));
+      }, "Cancel"))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(reactstrap__WEBPACK_IMPORTED_MODULE_2__["Modal"], {
+        isOpen: this.state.importModal,
+        toggle: this.importModal
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(reactstrap__WEBPACK_IMPORTED_MODULE_2__["ModalHeader"], null, "Import User Credential", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, this.state.responseError === 500 ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+        className: "text-danger"
+      }, "Coudn't Uploaded ") : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+        className: "text-success"
+      }, this.state.resStatus))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
+        onSubmit: this.onFormSubmit
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(reactstrap__WEBPACK_IMPORTED_MODULE_2__["ModalBody"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+        type: "file",
+        name: "file",
+        onChange: this.fileOnChange
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+        className: "text-danger"
+      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(reactstrap__WEBPACK_IMPORTED_MODULE_2__["ModalFooter"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(reactstrap__WEBPACK_IMPORTED_MODULE_2__["Button"], {
+        type: "submit"
+      }, "Import"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(reactstrap__WEBPACK_IMPORTED_MODULE_2__["Button"], {
+        porcolor: "secondary",
+        onClick: this.importModalToggle
+      }, "Cancel")))));
     }
   }]);
 

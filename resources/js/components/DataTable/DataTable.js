@@ -25,7 +25,7 @@ class DataTable extends Component{
             modal:false,
             username:'',
             email:'',
-            role:'admin',
+            role:'super_admin',
             password:'',
             responseError:[],
             resStatus:'',
@@ -36,7 +36,9 @@ class DataTable extends Component{
                 editRole:'',
             authorization:[],
             auth_user:[],
-            index:0
+            index:0,
+            importModal:false,
+            file:null
         }
 
         this.nextPageHandler = this.nextPageHandler.bind(this)
@@ -48,6 +50,11 @@ class DataTable extends Component{
         this.submitForm = this.submitForm.bind(this);
 
         this.editModalToggle = this.editModalToggle.bind(this)
+        this.importModalToggle = this.importModalToggle.bind(this)
+
+        this.fileOnChange = this.fileOnChange.bind(this)
+        this.onFormSubmit = this.onFormSubmit.bind(this)
+        this.handleExcelPost = this.handleExcelPost.bind(this)
 
     }
 
@@ -240,6 +247,43 @@ class DataTable extends Component{
     }
 
 
+    importModalToggle(){
+        this.setState({
+            importModal:!this.state.importModal,
+            resStatus:''
+        })
+    }
+
+    fileOnChange(event){
+        this.setState({
+            file:event.target.files[0]
+        })
+    }
+
+    onFormSubmit(event){
+        event.preventDefault()
+        this.handleExcelPost(this.state.file)
+    }
+
+    handleExcelPost(file){
+        const url = '/excel'
+        const formData = new FormData()
+        formData.append('file',file)
+        const config = {
+            headers:{
+                'content-type':'multipart/form-data'
+            }
+        }
+
+        axios.post(url,formData,config)
+            .then(res=>{
+                this.setState({
+                    resStatus:res.data.msg
+                })
+            })
+    }
+
+
     render(){
         //console.log(this.state.auth_user)
         //const data = 
@@ -253,10 +297,10 @@ class DataTable extends Component{
                                     <button className="btn btn-md btn-primary" onClick={this.toggle}> Add New </button>
                                 </div>
                                 <div className="ml-1 mr-1">
-                                    <button className="btn btn-md btn-primary"> Import </button>
+                                    <button className="btn btn-md btn-primary" onClick={this.importModalToggle}> Import </button>
                                 </div>
                                 <div className="ml-1 mr-1">
-                                    <button className="btn btn-md btn-primary"> Export </button>
+                                    <a href={'/excel'} className="btn btn-md btn-primary">Export</a>
                                 </div>
                             </div>
                     }
@@ -361,7 +405,7 @@ class DataTable extends Component{
                                         value={this.state.username}
                                         onChange = {this.setInputValue}
                                     />
-                                    <span className="text-danger"></span>
+                                    <span className="text-danger"> {this.state.responseError.username} </span>
                                 </FormGroup>
                                 <FormGroup>
                                     <Label>Password</Label>
@@ -447,9 +491,9 @@ class DataTable extends Component{
                                         name="editRole"
                                         value={this.state.editRole}
                                         onChange={this.setInputValue}
-                                        disabled={this.state.auth_user.role !== 'super_admin'}
+                                        disabled={this.state.auth_user.role !== 'super_admin' || this.state.auth_user.id === this.state.uid}
                                     >
-                                        <option value="admin">Admin</option>
+                                        <option value="super_admin">Super Admin</option>
                                         <option value="user">User</option>
                                     </Input>
                                 </FormGroup>
@@ -462,8 +506,35 @@ class DataTable extends Component{
                 </Modal>
                 {/* End Edit Modal */}
                 
-                {/* Delete Modal */}
-                {/* End Delete Modal */}
+                {/* Import Modal */}
+
+                <Modal isOpen={this.state.importModal} toggle={this.importModal}>
+                    <ModalHeader >Import User Credential
+                        <div>
+                            {
+                                this.state.responseError === 500 ? <span className="text-danger">Coudn't Uploaded </span>
+                                : <span className="text-success">{this.state.resStatus}</span>
+                            }
+                        </div>
+                    </ModalHeader>
+                    <form onSubmit={this.onFormSubmit}>
+                    <ModalBody>
+                                    <input 
+                                        type="file"
+                                        name="file"
+                                        onChange={this.fileOnChange}
+                                    />
+                                    <span className="text-danger"></span>
+                            
+                        </ModalBody>
+                        <ModalFooter>
+                            <Button type="submit">Import</Button>
+                            <Button porcolor="secondary" onClick={this.importModalToggle}>Cancel</Button>
+                        </ModalFooter>
+                        </form>
+                </Modal>
+
+                {/* End Import Modal */}
 
             </div>
         )
