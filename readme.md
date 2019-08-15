@@ -4,7 +4,7 @@
 <sub> All limitations has given willingly </sub>
 
 <hr/>
-<h4> Functionalities </h4>
+<h4> CRUD Operations </h4>
 <div>
     <table>
         <thead>
