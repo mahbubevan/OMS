@@ -35,7 +35,8 @@ class DataTable extends Component{
                 uid:0,
                 editRole:'',
             authorization:[],
-            auth_user:[]
+            auth_user:[],
+            index:0
         }
 
         this.nextPageHandler = this.nextPageHandler.bind(this)
@@ -173,41 +174,43 @@ class DataTable extends Component{
         })
     }
 
-    editUser(id,name,email,role){
+    editUser(id,name,email,role,index){
         //const uid = id.toString();
         //const uid = index+1
         // console.log(uid)
         // console.log(index)
+        this.editModalToggle()
+        
         this.setState({
                 editUsername:name,
                 editEmail:email,
                 uid:id,
                 editRole:role,
+                index
         })
         //console.log(id)
         //console.log(index)
         //console.log(this.state.uid)
-        this.editModalToggle()
     }
 
-    onUpdate(id,name,email,role){
+    onUpdate(id,name,email,role,index){
         //const id = event.target.value
         const url = `data/${id}`
-        const index = id-1
-        //console.log(url)
-        //console.log(event.target.value)
+        //const index = id-1
+        //const {result} = this.state
         const {result} = this.state
-        console.log(index)
-        result[index].name = name
-        result[index].email = email
-        result[index].role = role
         const newData = {
             name,
             email,
             role
         }
+        //console.log(result[index]);
         axios.put(url,newData)
             .then(res=>{
+                //console.log(res.data.data.name)
+                result[index].name = res.data.data.name
+                result[index].email = res.data.data.email
+                result[index].role = res.data.data.role
                 result[index].updated_at = res.data.data.updated_at
                 this.setState({
                     result,
@@ -453,7 +456,7 @@ class DataTable extends Component{
                             </Form>
                         </ModalBody>
                         <ModalFooter>
-                            <Button  onClick={this.onUpdate.bind(this,this.state.uid,this.state.editUsername,this.state.editEmail,this.state.editRole)}>Update</Button>
+                            <Button  onClick={this.onUpdate.bind(this,this.state.uid,this.state.editUsername,this.state.editEmail,this.state.editRole,this.state.index)}>Update</Button>
                             <Button color="secondary" onClick={this.editModalToggle}>Cancel</Button>
                         </ModalFooter>
                 </Modal>

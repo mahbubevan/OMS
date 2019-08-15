@@ -80254,7 +80254,8 @@ function (_Component) {
       uid: 0,
       editRole: '',
       authorization: [],
-      auth_user: []
+      auth_user: [],
+      index: 0
     };
     _this.nextPageHandler = _this.nextPageHandler.bind(_assertThisInitialized(_this));
     _this.prevPageHandler = _this.prevPageHandler.bind(_assertThisInitialized(_this)); //New Item
@@ -80400,43 +80401,43 @@ function (_Component) {
     }
   }, {
     key: "editUser",
-    value: function editUser(id, name, email, role) {
+    value: function editUser(id, name, email, role, index) {
       //const uid = id.toString();
       //const uid = index+1
       // console.log(uid)
       // console.log(index)
+      this.editModalToggle();
       this.setState({
         editUsername: name,
         editEmail: email,
         uid: id,
-        editRole: role
+        editRole: role,
+        index: index
       }); //console.log(id)
       //console.log(index)
       //console.log(this.state.uid)
-
-      this.editModalToggle();
     }
   }, {
     key: "onUpdate",
-    value: function onUpdate(id, name, email, role) {
+    value: function onUpdate(id, name, email, role, index) {
       var _this6 = this;
 
       //const id = event.target.value
-      var url = "data/".concat(id);
-      var index = id - 1; //console.log(url)
-      //console.log(event.target.value)
+      var url = "data/".concat(id); //const index = id-1
+      //const {result} = this.state
 
       var result = this.state.result;
-      console.log(index);
-      result[index].name = name;
-      result[index].email = email;
-      result[index].role = role;
       var newData = {
         name: name,
         email: email,
-        role: role
+        role: role //console.log(result[index]);
+
       };
       axios__WEBPACK_IMPORTED_MODULE_1___default.a.put(url, newData).then(function (res) {
+        //console.log(res.data.data.name)
+        result[index].name = res.data.data.name;
+        result[index].email = res.data.data.email;
+        result[index].role = res.data.data.role;
         result[index].updated_at = res.data.data.updated_at;
 
         _this6.setState({
@@ -80621,7 +80622,7 @@ function (_Component) {
       }, "Admin"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", {
         value: "user"
       }, "User"))))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(reactstrap__WEBPACK_IMPORTED_MODULE_2__["ModalFooter"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(reactstrap__WEBPACK_IMPORTED_MODULE_2__["Button"], {
-        onClick: this.onUpdate.bind(this, this.state.uid, this.state.editUsername, this.state.editEmail, this.state.editRole)
+        onClick: this.onUpdate.bind(this, this.state.uid, this.state.editUsername, this.state.editEmail, this.state.editRole, this.state.index)
       }, "Update"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(reactstrap__WEBPACK_IMPORTED_MODULE_2__["Button"], {
         color: "secondary",
         onClick: this.editModalToggle
