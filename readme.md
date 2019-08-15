@@ -16,19 +16,19 @@
         </thead>
         <tbody>
             <tr>
-                <td>View All User List</td>
+                <td>View</td>
                 <td> All </td>
                 <td>  </td>
             </tr>
             <tr>
-                <td>Create New User</td>
+                <td>Create</td>
                 <td> super_admin </td>
                 <td> Backend Validation </td>
             </tr>
             <tr>
-                <td>Update User</td>
+                <td>Update</td>
                 <td> All </td>
-                <td> super_admin can update all user, but user can only update their name & email . Password can't be updated (limitations) </td>
+                <td> super_admin can update all user, but user can only update their name & email . Password can't be updated (limitations) <br/> super_admin & user can't update their role. But other super_admin can update all user's role. </td>
             </tr>
             <tr>
                 <td>Delete User</td>
