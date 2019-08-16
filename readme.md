@@ -135,4 +135,7 @@
     <div>
         Run Laravel Artisan Command <strong> php artisan serve </strong>
     </div>
+    <div>
+         If you import given <strong>users.sql</strong> Find the emails on the excel file and use password <strong> "secret" </strong> or <strong> "12345678" </strong>
+    </div>
 </html>
