@@ -52,7 +52,7 @@
     <div>
         <h2>Live Demo</h2>
         <div>
-           <iframe width="560" height="315" src="https://www.youtube.com/embed/eh2TEzPfLxo" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+           <b>Visit: </b> <a href="https://youtu.be/eh2TEzPfLxo" target="_blank"> OMS DEMO </a>
         </div>
     </div>
 </div>
