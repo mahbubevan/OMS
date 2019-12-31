@@ -1,9 +1,6 @@
 <html>
 <h2> Demo Office Management System</h2>
 <h4>Descriptions</h4>
-<p>Demo Project . Made for Shorol hiring project</p>
-<sub> All limitations has given willingly </sub>
-
 <hr/>
 
 
@@ -41,7 +38,7 @@
              <tr>
                 <td>Export User Credential</td>
                 <td> super_admin </td>
-                <td> super_admin can Export All User Credential <br/> <b>Limitation: </b> Headers and Password field is not showing </td>
+                <td> super_admin can Export All User Credential <br/> <b>
             </tr>
             <tr>
                 <td>Import User Credential</td>
